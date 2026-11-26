@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/cuentadia_api
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update   # cambia a "validate" cuando uses Flyway con V1__init.sql
+    show-sql: true
+    open-in-view: false
