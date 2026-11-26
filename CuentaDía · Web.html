@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CuentaDía · Web</title>
+<style>
+:root{--bg:#0e1015;--s1:#171a21;--s2:#20242d;--tx:#e8eaf0;--mu:#8b93a7;--ac:#7c5cff;--ac2:#2dd4bf;--bd:#2a2f3a;--neg:#ff6b81;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.shell{display:grid;grid-template-columns:232px 1fr;height:100%}
+.side{background:var(--s1);border-right:1px solid var(--bd);padding:22px 14px;display:flex;flex-direction:column;gap:6px}
+.logo{font-size:24px;font-weight:800;padding:0 10px 18px}.logo b{color:var(--ac2)}
+.side button{background:none;border:0;text-align:left;color:var(--mu);padding:11px 12px;border-radius:12px;font:inherit;cursor:pointer}
+.side button:hover{background:var(--s2);color:var(--tx)}
+.side button.on{background:rgba(124,92,255,.18);color:#fff}
+.user{margin-top:auto;display:flex;gap:10px;align-items:center;padding:12px;border:1px solid var(--bd);border-radius:14px;font-size:13px}
+.av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));display:grid;place-items:center;font-weight:700}
+.main{overflow-y:auto;padding:26px 30px;min-width:0}
+.pg{display:none}.pg.on{display:block}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+h1{font-size:24px;margin:0}h2{font-size:15px;margin:0 0 14px}
+.mu{color:var(--mu);font-size:13px}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:18px;padding:18px;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px}
+.kpi .v{font-size:26px;font-weight:700;margin:4px 0 2px}
+.kpi.hero{background:linear-gradient(135deg,#3b2a8f,#1f6f73);border:0}
+.g2{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.row{display:flex;align-items:center;gap:12px}.sp{justify-content:space-between}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.leg{display:flex;flex-direction:column;gap:9px;flex:1;font-size:13px}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;color:var(--mu);font-weight:500;padding:8px 10px;border-bottom:1px solid var(--bd)}
+td{padding:11px 10px;border-bottom:1px solid var(--bd)}
+tr:last-child td{border:0}
+td.r,th.r{text-align:right}
+tbody tr:hover{background:var(--s2)}
+.tag{font-size:11px;background:var(--s2);border:1px solid var(--bd);border-radius:20px;padding:2px 9px;margin-right:4px;display:inline-block}
+input,select{background:var(--s2);border:1px solid var(--bd);border-radius:11px;padding:10px 12px;color:var(--tx);font:inherit;width:100%;margin-bottom:12px}
+label{display:block;font-size:12px;color:var(--mu);margin:0 0 4px 2px}
+.btn{background:var(--ac);border:0;border-radius:12px;padding:11px 18px;font:inherit;font-weight:600;color:#fff;cursor:pointer}
+.btn.alt{background:var(--s2);border:1px solid var(--bd)}
+.fl{display:flex;gap:10px}.fl input,.fl select{width:auto;margin:0}
+.bars{display:flex;gap:16px;align-items:flex-end;height:190px}
+.b{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;font-size:12px;color:var(--mu)}
+.b i{width:100%;max-width:56px;border-radius:9px 9px 3px 3px;background:#343a49}
+.b i.cur{background:linear-gradient(var(--ac),var(--ac2))}
+.pb{height:7px;background:var(--s2);border-radius:7px;overflow:hidden;margin-top:6px}
+.pb i{display:block;height:100%;border-radius:7px}
+.err{color:var(--neg);font-size:12px;min-height:16px;margin-bottom:8px}
+.x{background:none;border:0;color:var(--neg);cursor:pointer;font-size:15px}
+.two{display:grid;grid-template-columns:1fr 1.1fr;gap:16px}
+@media(max-width:960px){
+ .shell{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+ .side{flex-direction:row;overflow-x:auto;padding:10px;border-right:0;border-bottom:1px solid var(--bd);align-items:center}
+ .logo{padding:0 10px}.user{display:none}.side button{white-space:nowrap}
+ .main{padding:18px 16px}
+ .kpis{grid-template-columns:1fr 1fr}.g2,.g3,.two{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="side">
+  <div class="logo">Cuenta<b>Día</b></div>
+  <button data-s="dash" onclick="show('dash')">📊&nbsp; Dashboard</button>
+  <button data-s="list" onclick="show('list')">🧾&nbsp; Compras</button>
+  <button data-s="add" onclick="show('add')">➕&nbsp; Nueva compra</button>
+  <button data-s="rep" onclick="show('rep')">📈&nbsp; Reportes</button>
+  <div class="user"><div class="av">D</div><div><div>demo</div><span class="mu">Octubre 2026</span></div></div>
+</aside>
+
+<main class="main">
+
+<section class="pg on" id="dash">
+  <div class="top"><div><h1>Dashboard</h1><span class="mu">Resumen de octubre 2026</span></div>
+  <button class="btn" onclick="show('add')">+ Nueva compra</button></div>
+  <div class="kpis">
+    <div class="card kpi hero"><span style="opacity:.8">Gastado este mes</span><div class="v" id="k1"></div><span style="opacity:.8" id="k1s"></span></div>
+    <div class="card kpi"><span class="mu">Presupuesto restante</span><div class="v" id="k2"></div><span class="mu" id="k2s"></span></div>
+    <div class="card kpi"><span class="mu">Compras registradas</span><div class="v" id="k3"></div><span class="mu">en octubre</span></div>
+    <div class="card kpi"><span class="mu">Promedio diario</span><div class="v" id="k4"></div><span class="mu">hasta el día 9</span></div>
+  </div>
+  <div class="g2">
+    <div class="card"><h2>Gasto acumulado del mes</h2><div id="dLine"></div></div>
+    <div class="card"><h2>Por categoría</h2><div class="row"><div id="dDonut"></div><div class="leg" id="dLeg"></div></div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><h2>Últimas compras</h2><table><thead><tr><th>Fecha</th><th>Tienda</th><th>Cuenta</th><th class="r">Total</th></tr></thead><tbody id="dTab"></tbody></table></div>
+    <div class="card"><h2>Presupuesto</h2><div id="dBud"></div></div>
+  </div>
+</section>
+
+<section class="pg" id="list">
+  <div class="top"><div><h1>Compras</h1><span class="mu">Busca y filtra tus compras</span></div>
+  <div class="fl"><input id="q" placeholder="Buscar tienda…" oninput="render()"><select id="fc" onchange="render()"></select></div></div>
+  <div class="card"><table><thead><tr><th>Fecha</th><th>Tienda</th><th>Cuenta</th><th>Categorías</th><th class="r">Ítems</th><th class="r">Total</th></tr></thead><tbody id="lTab"></tbody></table></div>
+</section>
+
+<section class="pg" id="add">
+  <div class="top"><div><h1>Nueva compra</h1><span class="mu">Cada ítem lleva su propia categoría</span></div></div>
+  <div class="two">
+    <div class="card">
+      <div class="fl" style="margin-bottom:12px"><div style="flex:1"><label>Tienda</label><input id="aStore" placeholder="Ej. Tottus" style="width:100%;margin:0"></div>
+      <div><label>Fecha</label><input id="aDate" type="date" value="2026-10-09" style="margin:0"></div></div>
+      <label>Cuenta</label><select id="aAcc"><option>Efectivo</option><option>Yape</option><option>Plin</option><option>Visa</option></select>
+      <h2 style="margin-top:6px">Agregar ítem</h2>
+      <label>Descripción</label><input id="iN" placeholder="Ej. Arroz 5 kg">
+      <div class="fl" style="margin-bottom:12px"><div style="flex:1.3"><label>Categoría</label><select id="iC" style="width:100%;margin:0"></select></div>
+      <div style="flex:.6"><label>Cant.</label><input id="iQ" type="number" value="1" min="1" style="width:100%;margin:0"></div>
+      <div style="flex:.8"><label>Precio (S/)</label><input id="iP" type="number" step="0.1" placeholder="0.00" style="width:100%;margin:0"></div></div>
+      <div class="err" id="aErr"></div>
+      <button class="btn alt" onclick="addItem()">+ Agregar ítem</button>
+    </div>
+    <div class="card">
+      <h2>Resumen de la compra</h2>
+      <table><thead><tr><th>Ítem</th><th>Categoría</th><th class="r">Subtotal</th><th></th></tr></thead><tbody id="dTabA"></tbody></table>
+      <div class="row sp" style="margin:14px 0"><b>Total</b><b style="font-size:20px" id="dTot">S/ 0.00</b></div>
+      <button class="btn" style="width:100%" onclick="save()">Guardar compra</button>
+    </div>
+  </div>
+</section>
+
+<section class="pg" id="rep">
+  <div class="top"><div><h1>Reportes</h1><span class="mu">Tendencias y distribución</span></div></div>
+  <div class="card" style="margin-bottom:16px"><h2>Gasto por mes</h2><div id="rBars"></div></div>
+  <div class="g3">
+    <div class="card"><h2>Top tiendas</h2><div id="rSt"></div></div>
+    <div class="card"><h2>Por cuenta</h2><div id="rAc"></div></div>
+    <div class="card"><h2>Distribución</h2><div class="row"><div id="rDonut"></div><div class="leg" id="rLeg"></div></div></div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+const CAT={Comida:'#7c5cff',Transporte:'#2dd4bf',Hogar:'#f59e0b',Ocio:'#ff6b81',Salud:'#38bdf8'};
+const BUD={Comida:500,Transporte:200,Hogar:250,Ocio:120,Salud:100};
+const BASE=[780,845,910,690,860];
+let P=[
+ {s:'Plaza Vea',d:8,l:'08 oct',a:'Yape',i:[{n:'Leche x6',c:'Comida',q:1,p:32.5},{n:'Detergente',c:'Hogar',q:1,p:24.9},{n:'Pan y fruta',c:'Comida',q:1,p:18.2}]},
+ {s:'Grifo Primax',d:7,l:'07 oct',a:'Efectivo',i:[{n:'Gasolina',c:'Transporte',q:1,p:85}]},
+ {s:'Cinemark',d:5,l:'05 oct',a:'Visa',i:[{n:'Entradas',c:'Ocio',q:2,p:22},{n:'Canchita',c:'Ocio',q:1,p:18}]},
+ {s:'Farmacia',d:4,l:'04 oct',a:'Efectivo',i:[{n:'Vitaminas',c:'Salud',q:1,p:45}]},
+ {s:'Tottus',d:2,l:'02 oct',a:'Visa',i:[{n:'Arroz 5 kg',c:'Comida',q:1,p:28},{n:'Pollo',c:'Comida',q:1,p:36},{n:'Escoba',c:'Hogar',q:1,p:19.9}]},
+ {s:'Uber',d:1,l:'01 oct',a:'Visa',i:[{n:'Viajes',c:'Transporte',q:2,p:18.5}]}
+];
+let D=[];
+const $=id=>document.getElementById(id);
+const f=n=>'S/ '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pt=p=>p.i.reduce((s,x)=>s+x.q*x.p,0);
+const sortO=o=>Object.fromEntries(Object.entries(o).sort((a,b)=>b[1]-a[1]));
+function byCat(){const o={};P.forEach(p=>p.i.forEach(x=>o[x.c]=(o[x.c]||0)+x.q*x.p));return sortO(o)}
+function by(k){const o={};P.forEach(p=>o[p[k]]=(o[p[k]]||0)+pt(p));return sortO(o)}
+function donut(o,t){const r=42,C=2*Math.PI*r;let off=0,s='';
+ for(const k in o){const l=o[k]/t*C;s+=`<circle r="${r}" cx="60" cy="60" fill="none" stroke="${CAT[k]}" stroke-width="16" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"/>`;off+=l}
+ return `<svg viewBox="0 0 120 120" width="150">${s}<text x="60" y="57" text-anchor="middle" fill="#8b93a7" font-size="8">Total</text><text x="60" y="72" text-anchor="middle" fill="#e8eaf0" font-size="14" font-weight="700">${Math.round(t)}</text></svg>`}
+function legend(o){return Object.entries(o).map(([k,v])=>`<div class="row sp"><span class="row" style="gap:8px"><i class="dot" style="background:${CAT[k]}"></i>${k}</span><b>${f(v)}</b></div>`).join('')}
+function hb(o,col){const m=Math.max(...Object.values(o));return Object.entries(o).slice(0,5).map(([k,v])=>`<div style="margin-bottom:13px"><div class="row sp"><span>${k}</span><b>${f(v)}</b></div><div class="pb"><i style="width:${v/m*100}%;background:${col}"></i></div></div>`).join('')}
+function line(){const m={};P.forEach(p=>m[p.d]=(m[p.d]||0)+pt(p));
+ const ds=Object.keys(m).map(Number).sort((a,b)=>a-b);let c=0;const pts=ds.map(d=>[d,c+=m[d]]);
+ const mx=Math.max(...ds,9),T=c,W=460,H=170,X=d=>24+(d-1)/(mx-1)*(W-48),Y=v=>H-24-v/T*(H-50);
+ const pl=pts.map(([d,v])=>X(d)+','+Y(v)).join(' '),last=pts[pts.length-1];
+ return `<svg viewBox="0 0 ${W} ${H}" width="100%"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c5cff" stop-opacity=".45"/><stop offset="1" stop-color="#7c5cff" stop-opacity="0"/></linearGradient></defs><polygon points="${X(pts[0][0])},${H-24} ${pl} ${X(last[0])},${H-24}" fill="url(#g)"/><polyline points="${pl}" fill="none" stroke="#7c5cff" stroke-width="2.5" stroke-linejoin="round"/>${pts.map(([d,v])=>`<circle cx="${X(d)}" cy="${Y(v)}" r="3.5" fill="#2dd4bf"/>`).join('')}<text x="${X(last[0])}" y="${Y(last[1])-10}" text-anchor="end" fill="#e8eaf0" font-size="11" font-weight="600">${f(last[1])}</text><text x="24" y="${H-6}" fill="#8b93a7" font-size="10">día 1</text><text x="${W-24}" y="${H-6}" text-anchor="end" fill="#8b93a7" font-size="10">día ${mx}</text></svg>`}
+function tags(p){return [...new Set(p.i.map(x=>x.c))].map(c=>`<span class="tag" style="border-color:${CAT[c]}66">${c}</span>`).join('')}
+function render(){
+ const o=byCat(),t=P.reduce((s,p)=>s+pt(p),0),B=Object.values(BUD).reduce((a,b)=>a+b,0);
+ $('k1').textContent=f(t);$('k1s').textContent=Math.round(t/B*100)+'% del presupuesto';
+ $('k2').textContent=f(Math.max(0,B-t));$('k2s').textContent='de '+f(B);
+ $('k3').textContent=P.length;$('k4').textContent=f(t/9);
+ $('dLine').innerHTML=line();$('dDonut').innerHTML=donut(o,t);$('dLeg').innerHTML=legend(o);
+ $('dTab').innerHTML=P.slice(0,5).map(p=>`<tr><td>${p.l}</td><td>${p.s}</td><td class="mu">${p.a}</td><td class="r"><b>${f(pt(p))}</b></td></tr>`).join('');
+ const bud=Object.keys(BUD).map(k=>{const g=o[k]||0,pc=g/BUD[k]*100;return `<div style="margin-bottom:13px"><div class="row sp"><span class="row" style="gap:8px"><i class="dot" style="background:${CAT[k]}"></i>${k}</span><span class="mu">${f(g)} / ${f(BUD[k])}</span></div><div class="pb"><i style="width:${Math.min(100,pc)}%;background:${pc>100?'var(--neg)':CAT[k]}"></i></div></div>`}).join('');
+ $('dBud').innerHTML=bud;
+ const q=$('q').value.toLowerCase(),fc=$('fc').value;
+ $('lTab').innerHTML=P.filter(p=>p.s.toLowerCase().includes(q)&&(fc=='Todas'||p.i.some(x=>x.c==fc))).map(p=>`<tr><td>${p.l}</td><td>${p.s}</td><td class="mu">${p.a}</td><td>${tags(p)}</td><td class="r">${p.i.length}</td><td class="r"><b>${f(pt(p))}</b></td></tr>`).join('')||'<tr><td colspan="6" class="mu">Sin resultados</td></tr>';
+ const v=[...BASE,t],lb=['May','Jun','Jul','Ago','Sep','Oct'],m=Math.max(...v);
+ $('rBars').innerHTML='<div class="bars">'+v.map((x,i)=>`<div class="b"><span>${f(x)}</span><i class="${i==5?'cur':''}" style="height:${x/m*80}%"></i>${lb[i]}</div>`).join('')+'</div>';
+ $('rSt').innerHTML=hb(by('s'),'var(--ac)');$('rAc').innerHTML=hb(by('a'),'var(--ac2)');
+ $('rDonut').innerHTML=donut(o,t);$('rLeg').innerHTML=legend(o);
+}
+function show(id){
+ document.querySelectorAll('.pg').forEach(e=>e.classList.toggle('on',e.id==id));
+ document.querySelectorAll('.side [data-s]').forEach(b=>b.classList.toggle('on',b.dataset.s==id));
+ document.querySelector('.main').scrollTop=0;render();
+}
+function drawDraft(){
+ $('dTabA').innerHTML=D.length?D.map((x,k)=>`<tr><td>${x.n} <span class="mu">×${x.q}</span></td><td><span class="tag">${x.c}</span></td><td class="r">${f(x.q*x.p)}</td><td class="r"><button class="x" onclick="D.splice(${k},1);drawDraft()">✕</button></td></tr>`).join(''):'<tr><td colspan="4" class="mu">Aún no agregaste ítems</td></tr>';
+ $('dTot').textContent=f(D.reduce((s,x)=>s+x.q*x.p,0));
+}
+function addItem(){
+ const n=$('iN').value.trim(),q=+$('iQ').value,p=+$('iP').value;
+ if(!n||q<=0||!(p>0)){$('aErr').textContent='Completa descripción, cantidad y precio.';return}
+ $('aErr').textContent='';D.push({n,c:$('iC').value,q,p});
+ $('iN').value='';$('iP').value='';$('iQ').value=1;drawDraft();
+}
+function save(){
+ if(!D.length){$('aErr').textContent='Agrega al menos un ítem.';return}
+ const dt=new Date($('aDate').value+'T00:00');
+ P.unshift({s:$('aStore').value.trim()||'Sin tienda',d:dt.getDate(),l:dt.toLocaleDateString('es-PE',{day:'2-digit',month:'short'}).replace('.',''),a:$('aAcc').value,i:D});
+ D=[];$('aStore').value='';drawDraft();show('dash');
+}
+$('iC').innerHTML=Object.keys(CAT).map(k=>`<option>${k}</option>`).join('');
+$('fc').innerHTML='<option>Todas</option>'+Object.keys(CAT).map(k=>`<option>${k}</option>`).join('');
+drawDraft();show('dash');
+</script>
+</body>
+</html>

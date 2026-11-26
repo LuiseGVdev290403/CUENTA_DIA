@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CuentaDía · Prototipo</title>
+<style>
+:root{--bg:#0e1015;--s1:#171a21;--s2:#20242d;--tx:#e8eaf0;--mu:#8b93a7;--ac:#7c5cff;--ac2:#2dd4bf;--bd:#2a2f3a;--neg:#ff6b81;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.app{max-width:430px;height:100%;margin:0 auto;display:flex;flex-direction:column;background:var(--bg);border-left:1px solid var(--bd);border-right:1px solid var(--bd)}
+.scr{display:none;flex:1;min-height:0;overflow-y:auto;padding:18px 16px 24px}
+.scr.on{display:block}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:15px;margin:0 0 12px}
+.mu{color:var(--mu);font-size:13px}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:18px;padding:16px;margin-bottom:14px}
+.hero{background:linear-gradient(135deg,#3b2a8f,#1f6f73);border:0}
+.hero .big{font-size:32px;font-weight:700;margin:2px 0 10px}
+.bar{height:8px;background:rgba(255,255,255,.18);border-radius:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:#fff;border-radius:8px}
+.row{display:flex;align-items:center;gap:12px}
+.sp{justify-content:space-between}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.leg{display:flex;flex-direction:column;gap:8px;flex:1;font-size:13px}
+.item{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--bd)}
+.item:last-child{border:0}
+.ic{width:38px;height:38px;border-radius:12px;background:var(--s2);display:grid;place-items:center;font-size:18px;flex:none}
+.amt{font-weight:600}
+input,select,button{font:inherit;color:var(--tx)}
+input,select{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:12px;padding:11px 12px;margin-bottom:10px}
+label{display:block;font-size:12px;color:var(--mu);margin:0 0 4px 2px}
+.btn{width:100%;background:var(--ac);border:0;border-radius:14px;padding:13px;font-weight:600;cursor:pointer}
+.btn.alt{background:var(--s2);border:1px solid var(--bd)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px}
+nav{display:none;justify-content:space-around;align-items:center;background:var(--s1);border-top:1px solid var(--bd);padding:8px 6px}
+.app.in nav{display:flex}
+nav button{background:none;border:0;color:var(--mu);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:4px 8px}
+nav button span{font-size:19px}
+nav button.on{color:var(--ac2)}
+nav .fab{background:var(--ac);color:#fff;width:50px;height:50px;border-radius:16px;font-size:26px;justify-content:center;margin-top:-22px;box-shadow:0 6px 18px rgba(124,92,255,.45)}
+.bars{display:flex;gap:10px;align-items:flex-end;height:140px}
+.b{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;font-size:11px;color:var(--mu)}
+.b i{width:100%;border-radius:8px 8px 3px 3px;background:#343a49}
+.b i.cur{background:linear-gradient(var(--ac),var(--ac2))}
+.pb{height:7px;background:var(--s2);border-radius:7px;overflow:hidden;margin-top:6px}
+.pb i{display:block;height:100%;border-radius:7px}
+details{border-bottom:1px solid var(--bd);padding:10px 0}
+details:last-child{border:0}
+summary{list-style:none;cursor:pointer}summary::-webkit-details-marker{display:none}
+.sub{display:flex;justify-content:space-between;font-size:13px;color:var(--mu);padding:6px 0 0 50px}
+.tag{font-size:11px;background:var(--s2);border-radius:20px;padding:2px 9px;color:var(--mu)}
+.err{color:var(--neg);font-size:12px;min-height:16px;margin:4px 0}
+.logo{font-size:34px;font-weight:800;margin:56px 0 4px}.logo b{color:var(--ac2)}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+<section class="scr on" id="login">
+  <div class="logo">Cuenta<b>Día</b></div>
+  <p class="mu" style="margin:0 0 28px">Tus compras y gastos, ordenados por categoría.</p>
+  <label>Usuario</label><input value="demo">
+  <label>Contraseña</label><input type="password" value="12345678">
+  <button class="btn" onclick="show('home')">Entrar</button>
+  <p class="mu" style="text-align:center;margin-top:16px">Prototipo con datos ficticios</p>
+</section>
+
+<section class="scr" id="home">
+  <div class="row sp" style="margin-bottom:14px"><div><h1>Hola 👋</h1><span class="mu">Octubre 2026</span></div><div class="ic">🌙</div></div>
+  <div class="card hero">
+    <span style="opacity:.8;font-size:13px">Gastado este mes</span>
+    <div class="big" id="hTot"></div>
+    <div class="bar"><i id="hBar"></i></div>
+    <div class="mu" style="color:rgba(255,255,255,.75);margin-top:8px" id="hTxt"></div>
+  </div>
+  <div class="card"><h2>Por categoría</h2><div class="row"><div id="hDonut"></div><div class="leg" id="hLeg"></div></div></div>
+  <div class="card"><h2>Últimas compras</h2><div id="hList"></div></div>
+</section>
+
+<section class="scr" id="list">
+  <h1>Compras</h1><p class="mu" style="margin:0 0 14px">Toca una compra para ver su detalle</p>
+  <div class="card" id="lList"></div>
+</section>
+
+<section class="scr" id="add">
+  <h1>Nueva compra</h1><p class="mu" style="margin:0 0 14px">Cada ítem lleva su categoría</p>
+  <div class="g2"><div><label>Tienda</label><input id="aStore" placeholder="Ej. Tottus"></div>
+  <div><label>Fecha</label><input id="aDate" type="date" value="2026-10-09"></div></div>
+  <label>Cuenta</label>
+  <select id="aAcc"><option>Efectivo</option><option>Yape</option><option>Plin</option><option>Visa</option></select>
+  <div class="card">
+    <h2>Agregar ítem</h2>
+    <label>Descripción</label><input id="iN" placeholder="Ej. Arroz 5 kg">
+    <label>Categoría</label><select id="iC"></select>
+    <div class="g2"><div><label>Cantidad</label><input id="iQ" type="number" value="1" min="1"></div>
+    <div><label>Precio unit. (S/)</label><input id="iP" type="number" step="0.1" placeholder="0.00"></div></div>
+    <div class="err" id="aErr"></div>
+    <button class="btn alt" onclick="addItem()">+ Agregar ítem</button>
+  </div>
+  <div class="card"><h2>Ítems de la compra</h2><div id="dList"></div>
+    <div class="row sp" style="margin-top:8px"><b>Total</b><b id="dTot">S/ 0.00</b></div></div>
+  <button class="btn" onclick="save()">Guardar compra</button>
+</section>
+
+<section class="scr" id="rep">
+  <h1>Reportes</h1><p class="mu" style="margin:0 0 14px">Últimos 6 meses y presupuesto</p>
+  <div class="card"><h2>Gasto por mes</h2><div id="rBars"></div></div>
+  <div class="card"><h2>Presupuesto por categoría</h2><div id="rBud"></div></div>
+  <div class="card"><h2>Distribución</h2><div class="row"><div id="rDonut"></div><div class="leg" id="rLeg"></div></div></div>
+</section>
+
+<nav id="nav">
+  <button data-s="home" onclick="show('home')"><span>🏠</span>Inicio</button>
+  <button data-s="list" onclick="show('list')"><span>🧾</span>Compras</button>
+  <button class="fab" data-s="add" onclick="show('add')">+</button>
+  <button data-s="rep" onclick="show('rep')"><span>📊</span>Reportes</button>
+  <button onclick="show('login')"><span>🚪</span>Salir</button>
+</nav>
+</div>
+
+<script>
+const CAT={Comida:'#7c5cff',Transporte:'#2dd4bf',Hogar:'#f59e0b',Ocio:'#ff6b81',Salud:'#38bdf8'};
+const ICO={Comida:'🛒',Transporte:'🚗',Hogar:'🏠',Ocio:'🎬',Salud:'💊'};
+const BUD={Comida:500,Transporte:200,Hogar:250,Ocio:120,Salud:100};
+const BASE=[780,845,910,690,860];
+let P=[
+ {s:'Plaza Vea',d:'08 oct',a:'Yape',i:[{n:'Leche x6',c:'Comida',q:1,p:32.5},{n:'Detergente',c:'Hogar',q:1,p:24.9},{n:'Pan y fruta',c:'Comida',q:1,p:18.2}]},
+ {s:'Grifo Primax',d:'07 oct',a:'Efectivo',i:[{n:'Gasolina',c:'Transporte',q:1,p:85}]},
+ {s:'Cinemark',d:'05 oct',a:'Visa',i:[{n:'Entradas',c:'Ocio',q:2,p:22},{n:'Canchita',c:'Ocio',q:1,p:18}]},
+ {s:'Farmacia',d:'04 oct',a:'Efectivo',i:[{n:'Vitaminas',c:'Salud',q:1,p:45}]},
+ {s:'Tottus',d:'02 oct',a:'Visa',i:[{n:'Arroz 5 kg',c:'Comida',q:1,p:28},{n:'Pollo',c:'Comida',q:1,p:36},{n:'Escoba',c:'Hogar',q:1,p:19.9}]},
+ {s:'Uber',d:'01 oct',a:'Visa',i:[{n:'Viajes',c:'Transporte',q:2,p:18.5}]}
+];
+let D=[];
+const $=id=>document.getElementById(id);
+const f=n=>'S/ '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pt=p=>p.i.reduce((s,x)=>s+x.q*x.p,0);
+function byCat(){const o={};P.forEach(p=>p.i.forEach(x=>o[x.c]=(o[x.c]||0)+x.q*x.p));return Object.fromEntries(Object.entries(o).sort((a,b)=>b[1]-a[1]))}
+function donut(o,t){const r=42,C=2*Math.PI*r;let off=0,s='';
+ for(const k in o){const l=o[k]/t*C;s+=`<circle r="${r}" cx="60" cy="60" fill="none" stroke="${CAT[k]}" stroke-width="16" stroke-dasharray="${l} ${C-l}" stroke-dashoffset="${-off}" transform="rotate(-90 60 60)"/>`;off+=l}
+ return `<svg viewBox="0 0 120 120" width="140"><circle r="${r}" cx="60" cy="60" fill="none" stroke="#20242d" stroke-width="16" opacity=".0"/>${s}<text x="60" y="57" text-anchor="middle" fill="#8b93a7" font-size="8">Total</text><text x="60" y="72" text-anchor="middle" fill="#e8eaf0" font-size="14" font-weight="700">${Math.round(t)}</text></svg>`}
+function legend(o){return Object.entries(o).map(([k,v])=>`<div class="row sp"><span class="row" style="gap:8px"><i class="dot" style="background:${CAT[k]}"></i>${k}</span><b>${f(v)}</b></div>`).join('')}
+function row(p){return `<div class="item"><div class="row"><div class="ic">${ICO[p.i[0].c]}</div><div><div>${p.s}</div><span class="mu">${p.d} · ${p.a}</span></div></div><span class="amt">${f(pt(p))}</span></div>`}
+function render(){
+ const o=byCat(),t=P.reduce((s,p)=>s+pt(p),0),B=Object.values(BUD).reduce((a,b)=>a+b,0);
+ $('hTot').textContent=f(t);$('hBar').style.width=Math.min(100,t/B*100)+'%';
+ $('hTxt').textContent=Math.round(t/B*100)+'% del presupuesto de '+f(B);
+ $('hDonut').innerHTML=donut(o,t);$('hLeg').innerHTML=legend(o);
+ $('hList').innerHTML=P.slice(0,3).map(row).join('');
+ $('lList').innerHTML=P.map(p=>`<details><summary>${row(p)}</summary>${p.i.map(x=>`<div class="sub"><span>${x.n} <span class="tag">${x.c}</span> ×${x.q}</span><span>${f(x.q*x.p)}</span></div>`).join('')}</details>`).join('');
+ const v=[...BASE,t],l=['May','Jun','Jul','Ago','Sep','Oct'],m=Math.max(...v);
+ $('rBars').innerHTML='<div class="bars">'+v.map((x,i)=>`<div class="b"><span>${Math.round(x)}</span><i class="${i==5?'cur':''}" style="height:${x/m*85}%"></i>${l[i]}</div>`).join('')+'</div>';
+ $('rBud').innerHTML=Object.keys(BUD).map(k=>{const g=o[k]||0,pc=g/BUD[k]*100;return `<div style="margin-bottom:12px"><div class="row sp"><span class="row" style="gap:8px"><i class="dot" style="background:${CAT[k]}"></i>${k}</span><span class="mu">${f(g)} / ${f(BUD[k])}</span></div><div class="pb"><i style="width:${Math.min(100,pc)}%;background:${pc>100?'var(--neg)':CAT[k]}"></i></div></div>`}).join('');
+ $('rDonut').innerHTML=donut(o,t);$('rLeg').innerHTML=legend(o);
+}
+function show(id){
+ document.querySelectorAll('.scr').forEach(e=>e.classList.toggle('on',e.id==id));
+ $('app').classList.toggle('in',id!='login');
+ document.querySelectorAll('nav [data-s]').forEach(b=>b.classList.toggle('on',b.dataset.s==id&&!b.classList.contains('fab')));
+ document.getElementById(id).scrollTop=0;render();
+}
+function drawDraft(){
+ $('dList').innerHTML=D.length?D.map((x,k)=>`<div class="item"><div><div>${x.n}</div><span class="mu">${x.c} · ${x.q} × ${f(x.p)}</span></div><span class="row"><b>${f(x.q*x.p)}</b><button onclick="D.splice(${k},1);drawDraft()" style="background:none;border:0;color:var(--neg);cursor:pointer;font-size:16px">✕</button></span></div>`).join(''):'<span class="mu">Aún no agregaste ítems</span>';
+ $('dTot').textContent=f(D.reduce((s,x)=>s+x.q*x.p,0));
+}
+function addItem(){
+ const n=$('iN').value.trim(),q=+$('iQ').value,p=+$('iP').value;
+ if(!n||q<=0||!(p>0)){$('aErr').textContent='Completa descripción, cantidad y precio.';return}
+ $('aErr').textContent='';D.push({n,c:$('iC').value,q,p});
+ $('iN').value='';$('iP').value='';$('iQ').value=1;drawDraft();
+}
+function save(){
+ if(!D.length){$('aErr').textContent='Agrega al menos un ítem.';return}
+ const dt=new Date($('aDate').value+'T00:00'),d=dt.toLocaleDateString('es-PE',{day:'2-digit',month:'short'}).replace('.','');
+ P.unshift({s:$('aStore').value.trim()||'Sin tienda',d,a:$('aAcc').value,i:D});
+ D=[];$('aStore').value='';drawDraft();show('home');
+}
+$('iC').innerHTML=Object.keys(CAT).map(k=>`<option>${k}</option>`).join('');
+drawDraft();render();
+</script>
+</body>
+</html>
