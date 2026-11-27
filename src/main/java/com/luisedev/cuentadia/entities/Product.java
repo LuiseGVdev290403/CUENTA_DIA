@@ -26,6 +26,7 @@ public class Product {
     private String description;
 
     private double price;
+    @Column(name="unit_med")
     private String unitMed;
 
     private Date date;

@@ -2,12 +2,16 @@ package com.luisedev.cuentadia.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Setter
+@Getter
 @Entity
 @Table(name="voucher")
 @AllArgsConstructor
@@ -41,6 +45,14 @@ public class Voucher {
     @ManyToMany(mappedBy = "vouchers")
     private Set<Tags> tags;
 
-
-
+    public Voucher(double price, String description, Date date, String receipt_url, Users user, Store store, Account account,  Set<Tags> tags) {
+        this.price = price;
+        this.description = description;
+        this.date = date;
+        this.receipt_url = receipt_url;
+        this.user = user;
+        this.store = store;
+        this.account = account;
+        this.tags = tags;
+    }
 }

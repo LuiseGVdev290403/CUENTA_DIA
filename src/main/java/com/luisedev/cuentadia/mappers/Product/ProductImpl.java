@@ -11,13 +11,14 @@ public class ProductImpl implements IProductMapper {
 
     @Override
     public Product toProductEntity(ProductRequest productRequest) {
+
         if (productRequest == null) {
             return null;
         }
         return new Product (
                 productRequest.name(),
                 productRequest.description(),
-                productRequest.unitMEd(),
+                productRequest.unit_med(),
                 productRequest.price(),
                 productRequest.date()
         );

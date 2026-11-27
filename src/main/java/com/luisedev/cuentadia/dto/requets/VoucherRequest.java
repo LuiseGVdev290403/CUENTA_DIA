@@ -11,6 +11,7 @@ public record VoucherRequest(
     Long userId,
     Long storeId,
     Long accountId,
+    List<Long> tagsId,
     List<VoucherDetailRequest> voucherDetails
 
 ) {

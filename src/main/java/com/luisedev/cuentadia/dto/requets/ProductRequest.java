@@ -6,7 +6,7 @@ public record ProductRequest(
         String name,
         String description,
         double price,
-        String unitMEd,
+        String unit_med,
         Date date
 ) {
 }

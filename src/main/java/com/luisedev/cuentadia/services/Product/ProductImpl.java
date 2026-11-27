@@ -29,6 +29,8 @@ public class ProductImpl implements IProductService{
 
     @Override
     public ProductResponse productSaved(ProductRequest productRequest) {
+        System.out.println(productRequest.unit_med());
+        System.out.println("AAAA");
         Product product = productMapper.toProductEntity(productRequest);
         Product productSaved = productRepository.save(product);
         return productMapper.toProductResponse(productSaved);

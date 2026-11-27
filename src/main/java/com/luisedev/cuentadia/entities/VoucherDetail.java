@@ -2,8 +2,12 @@ package com.luisedev.cuentadia.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name="VoucherDetail")
 @AllArgsConstructor
@@ -27,4 +31,13 @@ public class VoucherDetail {
     @ManyToOne
     @JoinColumn(name="product_id", nullable = false)
     private Product product;
+
+    public VoucherDetail(String description, double quantity, double unit_price, double subtotal, Voucher voucher, Product product) {
+        this.description = description;
+        this.quantity = quantity;
+        this.unit_price = unit_price;
+        this.subtotal = subtotal;
+        this.voucher = voucher;
+        this.product = product;
+    }
 }
