@@ -40,4 +40,11 @@ public class VoucherDetail {
         this.voucher = voucher;
         this.product = product;
     }
+    public VoucherDetail(String description, double quantity, double unit_price, double subtotal, Product product) {
+        this.description = description;
+        this.quantity = quantity;
+        this.unit_price = unit_price;
+        this.subtotal = subtotal;
+        this.product = product;
+    }
 }

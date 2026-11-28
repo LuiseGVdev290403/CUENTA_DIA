@@ -39,13 +39,13 @@ public class Voucher {
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
-    @OneToMany(mappedBy = "voucher")
+    @OneToMany(mappedBy = "voucher", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<VoucherDetail> voucherDetails;
 
     @ManyToMany(mappedBy = "vouchers")
     private Set<Tags> tags;
 
-    public Voucher(double price, String description, Date date, String receipt_url, Users user, Store store, Account account,  Set<Tags> tags) {
+    public Voucher(double price, String description, Date date, String receipt_url, Users user, Store store, Account account,  Set<Tags> tags, Set<VoucherDetail> voucherDetails ) {
         this.price = price;
         this.description = description;
         this.date = date;
@@ -54,5 +54,6 @@ public class Voucher {
         this.store = store;
         this.account = account;
         this.tags = tags;
+        this.voucherDetails = voucherDetails;
     }
 }
